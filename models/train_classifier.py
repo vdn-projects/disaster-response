@@ -13,10 +13,11 @@ from nltk.corpus import stopwords
 
 import pickle
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.decomposition import TruncatedSVD
 from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV
 
@@ -61,7 +62,7 @@ def tokenize(text):
     
     # Lemmatize
     lemmatizer = WordNetLemmatizer()
-    clean_words = [lemmatizer.lemmatize(w, pos="n").strip() for w in words]
+    clean_words = [lemmatizer.lemmatize(w).strip() for w in words]
     clean_words = [lemmatizer.lemmatize(w, pos="v").strip() for w in clean_words]
     
     return clean_words
@@ -76,9 +77,10 @@ def build_model():
     """
     # Build a pipeline
     pipeline = Pipeline([
-        ("vect", CountVectorizer(tokenizer=tokenize)),
+        ("vect", CountVectorizer(tokenize)),
+        ("best", TruncatedSVD()),
         ("tfidf", TfidfTransformer()),
-        ("clf", MultiOutputClassifier(RandomForestClassifier()))
+        ("clf", MultiOutputClassifier(AdaBoostClassifier()))
     ])
 
     # Hypertuning
@@ -110,7 +112,6 @@ def evaluate_model(model, X_test, y_test):
         print(col)
         print(classification_report(y_test[col], y_pred[:, i]))
 
-    
 
 def save_model(model, model_filepath):
     """
@@ -123,7 +124,7 @@ def save_model(model, model_filepath):
     Returns:
         Store the model to specific location
     """
-    with open('model_filepath', 'wb') as f:
+    with open(model_filepath, 'wb') as f:
         pickle.dump(model, f)
 
 def main():
@@ -152,7 +153,7 @@ def main():
     else:
         print("""
         Please provide the database_filepath and model_filepath correctly as below example:
-        python train_classifier.py ./../data/disaster_response.db model.pkl
+        python train_classifier.py ./../data/disaster_response.db classifier.pkl
         """)
 
 if __name__=="__main__":
