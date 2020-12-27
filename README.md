@@ -5,7 +5,7 @@ In this project, we aim at building an end-to-end machine learning application t
 Project is comprised of components: `ETL pipeline`, `ML pipeline` and `Flass App`.
 
 ## Installation
-To successfully run the project, below are list of dependencies:
+To successfully run the project, below are list of dependencies need to be installed in the python environment:
 * python >3.6
 * sklearn==0.0
 * nltk==3.5
@@ -13,7 +13,7 @@ To successfully run the project, below are list of dependencies:
 * pandas==1.1.5
 * numpy==1.19.4
 * plotly==4.14.1
-* Flask==1.1.2
+* Flask==1.1.2 
 
 ## ETL pipeline
 * Perform Extract, Transform and Load data provided by Figure8 including `messages` and its corresponding `categories`.
