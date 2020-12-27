@@ -14,7 +14,9 @@ To successfully run the project, below are list of dependencies need to be insta
 * numpy==1.19.4
 * plotly==4.14.1
 * Flask==1.1.2 
+
 <br>
+
 ## ETL pipeline
 * Perform Extract, Transform and Load data provided by Figure8 including `messages` and its corresponding `categories`.
 * Target table will be stored in SQLite under table `disaster_response` 
